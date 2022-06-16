@@ -15,8 +15,8 @@ function App() {
 
 
   
-const posts =[];
-let deneme =[];
+
+
 const images = [
   foto1,
   foto2,
@@ -29,53 +29,50 @@ const images = [
   foto9
 ];
 
-let imageIndex =0;
 
-for(let i =0;i<10;i++){
-  let item ={
-    id:i,
-    title:`Post ${i}`,
-    image:images[imageIndex]
-  }
-  posts.push(item);
-  imageIndex++;
-  if(imageIndex>images.length-1) imageIndex=0;
-}
 
-const Images =({columns,posts})=>{
 
+const Images =({columnsCount,images})=>{
+  let columns =[]
   let columnWrappers={}
   
-  for(let i=0; i<columns;i++){
+  for(let i=0; i<columnsCount;i++){
     columnWrappers[`column${i}`]=[];
   }
+
   
-  for(let i=0; i<posts.length;i++){
-  
-      const column = i % columns;
-      columnWrappers[`column${column}`].push(posts[i]);
-  }
+
+
  
-  for(let i=0;i < 3; i++){
-   
-   let columnPosts  = columnWrappers[`column${i}`];
-   
-     deneme[i]=  columnPosts;
-           
+  for(let i=0; i<images.length;i++){
+    
+      const c = i % columnsCount;
+      columnWrappers[`column${c}`].push(images[i]);
   }
-  return <div className="images">
-    {deneme.map(c=>{
-      return  <div className="column">
-                    {c.map(post=>{
-                      console.log(post.length);
-                    return <div className="post" key={post.id}> 
-                                            <img src={post.image} alt='deneme'/> 
+
+
+ 
+  for(let i=0; i < columnsCount; i++){
+   
+    columns.push(columnWrappers[`column${i}`]);
+    
+     
+  }
+
+
+  
+  return  columns.map((column,icol)=>{
+      return  <div key={icol} className="column">
+                    {column.map((image,ikey)=>{
+                      
+                    return <div key={ikey} className="post" > 
+                                            <img src={image} alt='deneme'/> 
                                             <div className="overlay"></div>
                                           </div>
                     })}
                </div>
-  })}
-  </div> 
+  })
+  
   
  
 } 
@@ -117,7 +114,7 @@ const Images =({columns,posts})=>{
 
           <div className='galeri'>
             <h2>Armutludan Manzaralar!</h2>
-          <Images columns={3} posts={posts}  />
+            <div className="images"> <Images columnsCount={3} images={images}  /> </div>
           </div>
 
 
